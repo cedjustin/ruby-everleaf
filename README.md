@@ -21,7 +21,6 @@
                  > Label_name : String
 
 ## Schema 
-
 User
 -----
 Id   | Name     |
