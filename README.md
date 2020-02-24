@@ -1,6 +1,26 @@
 # README
 
-### Tables
+## Model names
+> Name : Task
+> Name : User
+> Name : Labels
+
+## Tables
+>User > Columns :
+                 > Id : Integer
+                 > Name : String
+>Task > Columns :
+                 > Id : Integer
+                 > User_id : Bigint
+                 > Label_name : String
+                 > Start_date : Datetime
+                 > End_date : Datetime
+                 > Status : String
+>Labels > Columns:
+                 > Id : Integer
+                 > Label_name : String
+
+## Schema 
 
 User
 -----
