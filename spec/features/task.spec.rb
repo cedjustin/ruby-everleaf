@@ -13,7 +13,9 @@ RSpec.feature "Task management function", type: :feature do
   end
 
   scenario "Test of task details" do
-    task1=Task.first  
+    task = Task.create!(status:"pending")
+    visit task_path(task.id)
+    expect(page).to have_content "pending"
   end
 
 end
