@@ -1,12 +1,17 @@
 require 'rails_helper'
+
 RSpec.feature "Task management function", type: :feature do
+
+  background do
+    FactoryBot.create(:task)
+    FactoryBot.create(:second_task)
+  end
     
   scenario "Test task list" do
     Task.all
   end
+  
   scenario "Test task creation" do
-    Task.create!(start_date: 'test_task_01', end_date: '',status: 'pending')
-    Task.create!(start_date: 'test_task_01', end_date: '',status: 'done')
     visit tasks_path
     expect(page).to have_content 'pending'
     expect(page).to have_content 'done'
@@ -16,6 +21,12 @@ RSpec.feature "Task management function", type: :feature do
     task = Task.create!(status:"pending")
     visit task_path(task.id)
     expect(page).to have_content "pending"
+  end
+
+  scenario "Test whether tasks are arranged in descending order of creation date" do
+    visit tasks_path
+    tasks = Task.all
+    expect(Task.order("created_at desc").map(&:status)).to eq [ "done", "pending"]
   end
 
 end
