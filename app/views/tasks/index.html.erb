@@ -2,9 +2,12 @@
 
 <h1>Tasks</h1>
 
+<%= link_to "sort by expiration date", tasks_path(sort_expired: "true")%>
+
 <table>
   <thead>
     <tr>
+      <th>NO</th>
       <th>Start date</th>
       <th>End date</th>
       <th>Status</th>
@@ -15,6 +18,7 @@
   <tbody>
     <% @tasks.each do |task| %>
       <tr>
+        <td><%= task.id %></td>
         <td><%= task.start_date %></td>
         <td><%= task.end_date %></td>
         <td><%= task.status %></td>

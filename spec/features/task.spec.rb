@@ -26,7 +26,13 @@ RSpec.feature "Task management function", type: :feature do
   scenario "Test whether tasks are arranged in descending order of creation date" do
     visit tasks_path
     tasks = Task.all
-    expect(tasks.map(&:status)).to eq [ "done", "pending"]
+    expect(tasks.order("created_at desc").map(&:status)).to eq [ "done", "pending"]
+  end
+
+  scenario "Test whether tasks are arranged in descending order of end_date(deadline)" do
+    visit tasks_path
+    tasks = Task.all
+    expect(tasks.order(end_date: :desc).map(&:end_date)).to eq [ "2020-03-01 00:00:00.000000000 +0900", "2020-02-01 00:00:00.000000000 +0900"]
   end
 
 end
