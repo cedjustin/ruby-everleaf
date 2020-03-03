@@ -6,7 +6,9 @@ class TasksController < ApplicationController
     if params[:sort_expired]
       @tasks = Task.all.order(end_date: :desc)
     else
-      @tasks = Task.all.order(created_at: :asc)
+      @search = Task.ransack(params[:q])
+      @tasks = @search.result.order(created_at: :asc)
+      # @tasks = Task.all.order(created_at: :asc)
     end
   end
 
