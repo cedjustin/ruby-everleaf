@@ -18,7 +18,7 @@ RSpec.feature "Task management function", type: :feature do
   end
 
   scenario "Test of task details" do
-    task = Task.create!(start_date: '1/1/2020', end_date: '1/2/2020', status:"pending")
+    task = Task.create!(start_date: '1/1/2020', end_date: '1/2/2020', status:"pending", priority: "1")
     visit task_path(task.id)
     expect(page).to have_content "pending"
   end
@@ -40,6 +40,12 @@ RSpec.feature "Task management function", type: :feature do
     search = Task.ransack(status_cont: "done")
     tasks = search.result.order(created_at: :asc)
     expect(page).to have_content "done"
+  end
+
+  scenario "Test sort by priority" do
+    visit tasks_path
+    tasks = Task.all
+    expect(tasks.order(priority: :asc).map(&:priority)).to eq [ 1, 2]
   end
 
 end
