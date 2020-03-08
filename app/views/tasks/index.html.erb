@@ -5,7 +5,7 @@
 <%= link_to "sort by expiration date", tasks_path(sort_expired: "true")%>
 
 <%= search_form_for @search do |f| %>
-  <%= f.label :search %>
+  <%= f.label :status %>
   <%= f.search_field :status_cont %>
   <%= f.submit %>
 <% end %>

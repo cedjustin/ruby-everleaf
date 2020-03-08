@@ -35,4 +35,11 @@ RSpec.feature "Task management function", type: :feature do
     expect(tasks.order(end_date: :desc).map(&:end_date)).to eq [ "2020-03-01 00:00:00.000000000 +0900", "2020-02-01 00:00:00.000000000 +0900"]
   end
 
+  scenario "Test search by status" do
+    visit tasks_path
+    search = Task.ransack(status_cont: "done")
+    tasks = search.result.order(created_at: :asc)
+    expect(page).to have_content "done"
+  end
+
 end
