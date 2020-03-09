@@ -9,6 +9,8 @@
   <%= search_form_for @search do |f| %>
     <%= f.label :status %>
     <%= f.search_field :status_cont %>
+    <%= f.label :title %>
+    <%= f.search_field :title_cont %>
     <%= f.submit %>
   <% end %>
 </div>
@@ -17,6 +19,7 @@
   <thead>
     <tr>
       <th>NO</th>
+      <th>Title</th>
       <th>Start date</th>
       <th>End date</th>
       <th>Status</th>
@@ -29,6 +32,7 @@
     <% @tasks.each do |task| %>
       <tr>
         <td><%= task.id %></td>
+        <td><%= task.title %></td>
         <td><%= task.start_date %></td>
         <td><%= task.end_date %></td>
         <td><%= task.status %></td>
