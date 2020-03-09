@@ -3,7 +3,14 @@ class TasksController < ApplicationController
 
   # GET /tasks
   def index
-    @tasks = Task.all
+    @search = Task.ransack(params[:q])
+    @tasks = @search.result.order(created_at: :asc).page params[:page]
+    if params[:sort_expired]
+      @tasks = Task.all.order(end_date: :desc).page params[:page]
+    elsif params[:sort_priority]
+      @tasks = Task.all.order(priority: :asc).page params[:page]
+      # @tasks = Task.all.order(created_at: :asc)
+    end
   end
 
   # GET /tasks/1
@@ -53,6 +60,6 @@ class TasksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def task_params
-      params.require(:task).permit(:start_date, :end_date, :status)
+      params.require(:task).permit(:start_date, :end_date, :status, :priority)
     end
 end

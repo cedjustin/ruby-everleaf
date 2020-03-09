@@ -18,7 +18,7 @@ RSpec.feature "Task management function", type: :feature do
   end
 
   scenario "Test of task details" do
-    task = Task.create!(start_date: '1/1/2020', end_date: '1/2/2020', status:"pending")
+    task = Task.create!(start_date: '1/1/2020', end_date: '1/2/2020', status:"pending", priority: "1")
     visit task_path(task.id)
     expect(page).to have_content "pending"
   end
@@ -26,7 +26,26 @@ RSpec.feature "Task management function", type: :feature do
   scenario "Test whether tasks are arranged in descending order of creation date" do
     visit tasks_path
     tasks = Task.all
-    expect(tasks.map(&:status)).to eq [ "done", "pending"]
+    expect(tasks.order("created_at desc").map(&:status)).to eq [ "done", "pending"]
+  end
+
+  scenario "Test whether tasks are arranged in descending order of end_date(deadline)" do
+    visit tasks_path
+    tasks = Task.all
+    expect(tasks.order(end_date: :desc).map(&:end_date)).to eq [ "2020-03-01 00:00:00.000000000 +0900", "2020-02-01 00:00:00.000000000 +0900"]
+  end
+
+  scenario "Test search by status" do
+    visit tasks_path
+    search = Task.ransack(status_cont: "done")
+    tasks = search.result.order(created_at: :asc)
+    expect(page).to have_content "done"
+  end
+
+  scenario "Test sort by priority" do
+    visit tasks_path
+    tasks = Task.all
+    expect(tasks.order(priority: :asc).map(&:priority)).to eq [ 1, 2]
   end
 
 end

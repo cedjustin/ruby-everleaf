@@ -1,6 +1,10 @@
 class Task < ApplicationRecord
-    default_scope -> { order(created_at: :desc) }
     validates :start_date, presence: true
     validates :end_date, presence: true  
     validates :status, presence: true  
+    validates :priority, presence: true , numericality: { only_integer: true, greater_than: -1, less_than: 4 }
+
+    scope :search_status, -> (status){where('status = ?',status)}
+
+    paginates_per 4
 end
