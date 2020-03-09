@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
-  root "tasks#index"
+  resources :users
+  root "sessions#new"
   resources :tasks
+  resources :sessions
 end

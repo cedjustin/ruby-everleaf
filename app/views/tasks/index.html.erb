@@ -1,18 +1,25 @@
 <p id="notice"><%= notice %></p>
 
 <div class="nav nav-pills nav-justified">
-  <h1 class="nav-item">Tasks</h1>
-
+  <h1>Tasks</h1>
   <%= link_to "sort by expiration date", tasks_path(sort_expired: "true"),class:"nav-item"%>
   <%= link_to "sort by priority", tasks_path(sort_priority: "true"),class:"nav-item"%>
+    <%= search_form_for @search do |f| %>
+      <%= f.label :status %>
+      <%= f.search_field :status_cont %>
+      <%= f.label :title %>
+      <%= f.search_field :title_cont %>
+      <%= f.submit %>
+    <% end %>
 
-  <%= search_form_for @search do |f| %>
-    <%= f.label :status %>
-    <%= f.search_field :status_cont %>
-    <%= f.label :title %>
-    <%= f.search_field :title_cont %>
-    <%= f.submit %>
-  <% end %>
+  <div class="nav-item">
+    <% if logged_in? %>
+      <%= link_to "Logout", session_path(@current_user.id), method: :delete, class:"btn btn-dark" %>
+    <% else %>
+      <% controller.redirect_to new_session_path %>
+    <% end %>
+  </div>
+
 </div>
 
 <table class="table">
