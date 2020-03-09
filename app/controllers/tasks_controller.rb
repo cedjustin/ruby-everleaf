@@ -4,11 +4,11 @@ class TasksController < ApplicationController
   # GET /tasks
   def index
     @search = Task.ransack(params[:q])
-    @tasks = @search.result.order(created_at: :asc)
+    @tasks = @search.result.order(created_at: :asc).page params[:page]
     if params[:sort_expired]
-      @tasks = Task.all.order(end_date: :desc)
+      @tasks = Task.all.order(end_date: :desc).page params[:page]
     elsif params[:sort_priority]
-      @tasks = Task.all.order(priority: :asc) 
+      @tasks = Task.all.order(priority: :asc).page params[:page]
       # @tasks = Task.all.order(created_at: :asc)
     end
   end

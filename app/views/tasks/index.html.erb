@@ -1,17 +1,19 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Tasks</h1>
+<div class="nav nav-pills nav-justified">
+  <h1 class="nav-item">Tasks</h1>
 
-<%= link_to "sort by expiration date", tasks_path(sort_expired: "true")%>
-<%= link_to "sort by priority", tasks_path(sort_priority: "true")%>
+  <%= link_to "sort by expiration date", tasks_path(sort_expired: "true"),class:"nav-item"%>
+  <%= link_to "sort by priority", tasks_path(sort_priority: "true"),class:"nav-item"%>
 
-<%= search_form_for @search do |f| %>
-  <%= f.label :status %>
-  <%= f.search_field :status_cont %>
-  <%= f.submit %>
-<% end %>
+  <%= search_form_for @search do |f| %>
+    <%= f.label :status %>
+    <%= f.search_field :status_cont %>
+    <%= f.submit %>
+  <% end %>
+</div>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>NO</th>
@@ -49,4 +51,6 @@
 
 <br>
 
-<%= link_to 'New Task', new_task_path %>
+<%= link_to 'New Task', new_task_path,class:"mb-2" %>
+
+<%= paginate @tasks, class:"mt-5" %>
