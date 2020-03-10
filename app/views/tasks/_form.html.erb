@@ -28,12 +28,12 @@
 
   <div class="field">
     <%= form.label :status %>
-    <%= form.text_field :status %>
+    <%= form.select :status, [['Not yet started', 'Not yet started'],['in progress', 'in progress'], ['completed', 'completed']] %>
   </div>
 
   <div class="field">
     <%= form.label :priority %>
-    <%= form.number_field :priority %>
+    <%= form.select :priority, [['high', '1'],['medium', '2'], ['low', '3']] %>
   </div>
 
   <div class="actions">
