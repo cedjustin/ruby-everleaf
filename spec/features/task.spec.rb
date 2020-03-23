@@ -3,8 +3,6 @@ require 'rails_helper'
 RSpec.feature "Task management function", type: :feature do
 
   background do
-    FactoryBot.create(:task)
-    FactoryBot.create(:second_task)
     User.create!(username: 'cedjustin',  password: '123456', password_confirmation: "123456")
     visit new_session_path
     fill_in "session[username]", with: "cedjustin"
@@ -13,44 +11,142 @@ RSpec.feature "Task management function", type: :feature do
   end
     
   scenario "Test task list" do
-    Task.all
+    
+    visit new_task_path
+    fill_in "task[title]", with: "title23"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "in progress", from: "task[status]"
+    select "high", from: "task[priority]"
+    click_on '登録する'
+
+    visit new_task_path
+    fill_in "task[title]", with: "title3"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "Not yet started", from: "task[status]"
+    select "low", from: "task[priority]"
+    click_on '登録する'
+
+    visit tasks_path
+
+    expect(page).to have_content('title23')
+    expect(page).to have_content('title3')
+    expect(page).to have_content('low')
+    expect(page).to have_content('high')
+    expect(page).to have_content('in progress')
+    expect(page).to have_content('Not yet started')
+
   end
   
   scenario "Test task creation" do
-    visit tasks_path
-    expect(page).to have_content 'pending'
-    expect(page).to have_content 'done'
+
+    visit new_task_path
+    fill_in "task[title]", with: "title23"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "Not yet started", from: "task[status]"
+    select "high", from: "task[priority]"
+    click_on '登録する'
+    expect(page).to have_content 'Task was successfully created'
+
   end
 
   scenario "Test of task details" do
-    task = Task.create!(start_date: '1/1/2020', end_date: '1/2/2020', status:"pending", priority: "1")
-    visit task_path(task.id)
-    expect(page).to have_content "pending"
+
+    visit new_task_path
+    fill_in "task[title]", with: "title23"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "Not yet started", from: "task[status]"
+    select "high", from: "task[priority]"
+    click_on '登録する'
+    visit tasks_path
+    click_on 'Show'
+    expect(page).to have_content "Not yet started"
+
   end
 
   scenario "Test whether tasks are arranged in descending order of creation date" do
+
+    visit new_task_path
+    fill_in "task[title]", with: "title23"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "Not yet started", from: "task[status]"
+    select "high", from: "task[priority]"
+    click_on '登録する'
+
+    visit new_task_path
+    fill_in "task[title]", with: "title3"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "Not yet started", from: "task[status]"
+    select "low", from: "task[priority]"
+    click_on '登録する'
+
     visit tasks_path
-    tasks = Task.all
-    expect(tasks.order("created_at desc").map(&:status)).to eq [ "done", "pending"]
+    tasks = page.all('tr')
+    expect(tasks[1]).to have_content('low')
+    expect(tasks[2]).to have_content('high')
   end
 
-  scenario "Test whether tasks are arranged in descending order of end_date(deadline)" do
-    visit tasks_path
-    tasks = Task.all
-    expect(tasks.order(end_date: :desc).map(&:end_date)).to eq [ "2020-03-01 00:00:00.000000000 +0900", "2020-02-01 00:00:00.000000000 +0900"]
-  end
 
   scenario "Test search by status" do
+    visit new_task_path
+    fill_in "task[title]", with: "title3"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "Not yet started", from: "task[status]"
+    select "low", from: "task[priority]"
+    click_on '登録する'
+
     visit tasks_path
-    search = Task.ransack(status_cont: "done")
-    tasks = search.result.order(created_at: :asc)
-    expect(page).to have_content "done"
+    fill_in "q[status_cont]", with: "Not yet started"
+    click_on 'search'
+    expect(page).to have_content "Not yet started"
+  end
+
+
+  scenario "Test search by title" do
+    visit new_task_path
+    fill_in "task[title]", with: "title3"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "Not yet started", from: "task[status]"
+    select "low", from: "task[priority]"
+    click_on '登録する'
+
+    visit tasks_path
+    fill_in "q[title_cont]", with: "title3"
+    click_on 'search'
+    expect(page).to have_content "title3"
   end
 
   scenario "Test sort by priority" do
+
+    visit new_task_path
+    fill_in "task[title]", with: "title23"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "Not yet started", from: "task[status]"
+    select "high", from: "task[priority]"
+    click_on '登録する'
+
+    visit new_task_path
+    fill_in "task[title]", with: "title3"
+    fill_in "task[start_date]", with: Date.new(1/1/2020)
+    fill_in "task[end_date]", with: Date.new(1/2/2020)
+    select "Not yet started", from: "task[status]"
+    select "low", from: "task[priority]"
+    click_on '登録する'
+
     visit tasks_path
-    tasks = Task.all
-    expect(tasks.order(priority: :asc).map(&:priority)).to eq [ 1, 2]
+    click_on 'sort by priority'
+    tasks = page.all('tr')
+    expect(tasks[1]).to have_content('low')
+    expect(tasks[2]).to have_content('high')
+
   end
 
 end
