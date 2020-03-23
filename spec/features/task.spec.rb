@@ -5,6 +5,11 @@ RSpec.feature "Task management function", type: :feature do
   background do
     FactoryBot.create(:task)
     FactoryBot.create(:second_task)
+    User.create!(username: 'cedjustin',  password: '123456', password_confirmation: "123456")
+    visit new_session_path
+    fill_in "session[username]", with: "cedjustin"
+    fill_in "session[password]", with: "123456"
+    click_on 'login'
   end
     
   scenario "Test task list" do

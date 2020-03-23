@@ -21,4 +21,14 @@ RSpec.describe Task, type: :model do
     expect(task).to be_valid
   end
 
+  it  "Search with title: title24, find 1 result" do
+    Task.create(start_date: '1/1/2020', end_date: '1/2/2020', status: 'completed', title: 'title24', priority: '1')
+    expect(Task.search_title('title24').count).to eq 1
+  end
+
+  it  "Search with status: completed, find 1 result" do
+    Task.create(start_date: '1/1/2020', end_date: '1/2/2020', status: 'completed', title: 'title24', priority: '1')
+    expect(Task.search_status('completed').count).to eq 1
+  end
+
 end
