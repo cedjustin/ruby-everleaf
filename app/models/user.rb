@@ -3,4 +3,5 @@ class User < ApplicationRecord
     before_validation {username.downcase!}
     has_secure_password
     validates :password, :password_confirmation, presence:true, length: {minimum: 6}
+    has_manny :tasks, dependent: :destroy
 end

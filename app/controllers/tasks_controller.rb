@@ -20,6 +20,7 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @task = Task.new
+    current_user = @current_user
   end
 
   # GET /tasks/1/edit
@@ -60,6 +61,6 @@ class TasksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def task_params
-      params.require(:task).permit(:title,:start_date, :end_date, :status, :priority)
+      params.require(:task).permit(:title,:start_date, :end_date, :status, :priority, :user_id)
     end
 end
