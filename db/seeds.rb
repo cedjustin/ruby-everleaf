@@ -5,6 +5,7 @@
 #
 #   movies = Movie.create!([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create!(name: 'Luke', movie: movies.first)
+User.create!(email: 'cedrick@gmail.com', username: 'cedrick', password: '123456', password_confirmation: '123456', admin: 'true')
 Task.create!(title: 'title1', status: 'not yet started', start_date: '1/1/2020', end_date: '1/2/2020', priority: '1', user_id: '1')
 Task.create!(title: 'title2', status: 'not yet started', start_date: '1/1/2020', end_date: '1/2/2020', priority: '1', user_id: '1')
 Task.create!(title: 'title3', status: 'completed', start_date: '1/1/2020', end_date: '1/3/2020', priority: '1', user_id: '1')

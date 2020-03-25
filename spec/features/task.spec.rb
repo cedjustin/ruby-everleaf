@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature "Task management function", type: :feature do
 
   background do
-    User.create!(username: 'cedjustin',  password: '123456', password_confirmation: "123456")
+    User.create!(email: 'cedro265@gmail.com', username: 'cedjustin',  password: '123456', password_confirmation: "123456")
     visit new_session_path
     fill_in "session[username]", with: "cedjustin"
     fill_in "session[password]", with: "123456"
@@ -87,8 +87,8 @@ RSpec.feature "Task management function", type: :feature do
 
     visit tasks_path
     tasks = page.all('tr')
-    expect(tasks[1]).to have_content('low')
-    expect(tasks[2]).to have_content('high')
+    expect(tasks[1]).to have_content('high')
+    expect(tasks[2]).to have_content('low')
   end
 
 
