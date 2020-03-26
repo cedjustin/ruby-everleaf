@@ -21,6 +21,7 @@
       <th>Username</th>
       <th>Email</th>
       <th>Tasks</th>
+      <th>Admin</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -31,6 +32,11 @@
         <td><%= user.username %></td>
         <td><%= user.email %></td>
         <td><%= user.tasks.count %></td>
+        <%if user.admin%>
+          <td><strong class="text-success">Yes<strong></td>
+        <%else%>
+          <td><strong class="text-dark">NO<strong></td>
+        <%end%>
         <td><%= link_to 'Show', admin_user_path(user) %></td>
         <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -41,4 +47,3 @@
 
 <br>
 
-<%= link_to 'New User', new_user_path %>

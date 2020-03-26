@@ -43,7 +43,7 @@ module Admin
     # PATCH/PUT /users/1
     def update
       if @user.update(user_params)
-        redirect_to @user, notice: 'User was successfully updated.'
+        redirect_to admin_users_path, notice: 'User was successfully updated.'
       else
         render :edit
       end
@@ -51,17 +51,20 @@ module Admin
 
     # DELETE /users/1
     def destroy
-      @user.destroy
-      redirect_to users_url, notice: 'User was successfully destroyed.'
+      if @user.destroy
+        redirect_to admin_users_path, notice: 'User was successfully destroyed.'
+      else
+        redirect_to admin_users_path, notice: 'can not delete last admin'
+      end
     end
 
     private
 
     def check_if_current_user_is_admin
       if !logged_in?
-        redirect_to new_session_path
+        redirect_to new_session_path, notice: "you are not authorized to access this page"
       elsif !current_user.admin?
-        redirect_to tasks_path
+        redirect_to tasks_path, notice: "you are not authorized to access this page"
       end
     end
     
