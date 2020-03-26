@@ -1,5 +1,6 @@
 module Admin
   class UsersController < ApplicationController
+    before_action :check_if_current_user_is_admin
     before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     # GET /users
@@ -55,14 +56,23 @@ module Admin
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_user
-        @user = User.find(params[:id])
-      end
 
-      # Only allow a trusted parameter "white list" through.
-      def user_params
-        params.require(:user).permit(:email, :username, :password, :password_confirmation)
+    def check_if_current_user_is_admin
+      if !logged_in?
+        redirect_to new_session_path
+      elsif !current_user.admin?
+        redirect_to tasks_path
       end
+    end
+    
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:id])
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def user_params
+      params.require(:user).permit(:email, :username, :password, :password_confirmation)
+    end
   end
 end
