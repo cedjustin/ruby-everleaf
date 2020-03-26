@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  before_action :check_if_logged_in
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
@@ -60,13 +61,19 @@ class TasksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = Task.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def task_params
-      params.require(:task).permit(:title,:start_date, :end_date, :status, :priority, :user_id)
+  def check_if_logged_in
+    if !logged_in?
+      redirect_to new_session_path, notice: "you are not authorized to access this page"
     end
+  end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def task_params
+    params.require(:task).permit(:title,:start_date, :end_date, :status, :priority, :user_id)
+  end
 end
