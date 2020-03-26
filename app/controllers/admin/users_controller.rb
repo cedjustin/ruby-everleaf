@@ -4,7 +4,7 @@ module Admin
 
     # GET /users
     def index
-      @users = User.all
+      @users = User.includes(:tasks).all.order(created_at: :desc)
     end
 
     # GET /users/1
