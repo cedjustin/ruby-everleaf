@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root "sessions#new"
   resources :tasks
   resources :sessions
-  scope "/admin" do
+  namespace :admin do
     resources :users
   end
 end
