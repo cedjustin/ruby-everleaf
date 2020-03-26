@@ -75,7 +75,7 @@ module Admin
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:email, :username, :password, :password_confirmation)
+      params.require(:user).permit(:email, :username, :admin,:password, :password_confirmation)
     end
   end
 end

@@ -3,7 +3,11 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.all
+    if logged_in? && current_user.admin?
+      redirect_to admin_users_path
+    else
+      redirect_to new_session_path
+    end
   end
 
   # GET /users/1
@@ -41,7 +45,11 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
-      redirect_to @user, notice: 'User was successfully updated.'
+      if current_user.admin
+        redirect_to admin_users_path, notice: 'User was successfully updated.'
+      else
+        redirect_to @user, notice: 'User was successfully updated.'
+      end
     else
       render :edit
     end
@@ -49,8 +57,11 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user.destroy
-    redirect_to users_url, notice: 'User was successfully destroyed.'
+    if @user.destroy
+      redirect_to admin_users_path, notice: 'User was successfully destroyed.'
+    else
+      redirect_to admin_users_path, notice: 'can not delete last admin'
+    end
   end
 
   private
@@ -61,6 +72,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:email, :username, :password, :password_confirmation)
+      params.require(:user).permit(:email, :username, :admin,:password, :password_confirmation)
     end
 end

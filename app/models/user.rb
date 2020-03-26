@@ -3,7 +3,6 @@ class User < ApplicationRecord
     validates :username, presence:true, uniqueness:true,length:{maximum: 30}
     before_validation {username.downcase!}
     has_secure_password
-    validates :password, :password_confirmation, presence:true, length: {minimum: 6}
     before_destroy :check_if_its_last_admin
 
     has_many :tasks, dependent: :destroy
