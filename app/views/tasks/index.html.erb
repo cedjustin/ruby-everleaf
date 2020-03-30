@@ -32,6 +32,7 @@
       <th>End date</th>
       <th>Status</th>
       <th>Priority</th>
+      <th>Labels</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -53,6 +54,14 @@
             <td>medium</td>
           <%elsif task.priority == 3%>
             <td>low</td>
+          <%end%>
+        <%end%>
+        <%task.labels_ids.each do |id|%>
+          <%@labels.each do |label|%>
+            <%if id == label.id%>
+              <td><%=label.label_type%></td>
+            <%else%>
+            <%end%>
           <%end%>
         <%end%>
         <td><%= link_to 'Show', task %></td>

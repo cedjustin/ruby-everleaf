@@ -38,5 +38,17 @@
   <%end%>
 </p>
 
+<p>
+  <strong>Labels:</strong>
+  <%@task.labels_ids.each do |id|%>
+    <%@labels.each do |label|%>
+      <%if id == label.id%>
+        <span><%=label.label_type%></span>
+      <%else%>
+      <%end%>
+    <%end%>
+  <%end%>
+</p>
+
 <%= link_to 'Edit', edit_task_path(@task) %> |
 <%= link_to 'Back', tasks_path %>
