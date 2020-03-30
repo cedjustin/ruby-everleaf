@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_150042) do
+ActiveRecord::Schema.define(version: 2020_03_30_063019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "labels", force: :cascade do |t|
+    t.string "label_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -30,6 +36,8 @@ ActiveRecord::Schema.define(version: 2020_03_25_150042) do
     t.string "title"
     t.string "search"
     t.bigint "user_id"
+    t.bigint "labels_id"
+    t.index ["labels_id"], name: "index_tasks_on_labels_id"
     t.index ["search"], name: "index_tasks_on_search"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
@@ -43,5 +51,6 @@ ActiveRecord::Schema.define(version: 2020_03_25_150042) do
     t.boolean "admin", default: false
   end
 
+  add_foreign_key "tasks", "labels", column: "labels_id"
   add_foreign_key "tasks", "users"
 end

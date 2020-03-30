@@ -28,16 +28,18 @@ class TasksController < ApplicationController
   def new
     @task = Task.new
     current_user = @current_user
+    @labels = Label.all
   end
 
   # GET /tasks/1/edit
   def edit
+    @labels = Label.all
   end
 
   # POST /tasks
   def create
     @task = Task.new(task_params)
-
+    @labels = Label.all
     if @task.save
       redirect_to @task, notice: 'Task was successfully created.'
     else
@@ -74,6 +76,6 @@ class TasksController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def task_params
-    params.require(:task).permit(:title,:start_date, :end_date, :status, :priority, :user_id)
+    params.require(:task).permit(:title,:start_date, :end_date, :status, :priority, :user_id, label_ids: [])
   end
 end
