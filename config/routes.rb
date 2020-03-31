@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root "sessions#new"
   resources :tasks
   resources :sessions
+  resources :labels
   namespace :admin do
     resources :users
   end
