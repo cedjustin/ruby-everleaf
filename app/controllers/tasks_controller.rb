@@ -6,7 +6,7 @@ class TasksController < ApplicationController
   def index
     if logged_in?
       @search = Task.ransack(params[:q])
-      @tasks = @search.result.order(created_at: :desc).page(params[:page])
+      @tasks = @search.result.includes(:associations, :labels).order(created_at: :desc).page(params[:page])
       @labels = Label.all
       if params[:sort_expired]
         @tasks = Task.all.order(end_date: :desc).page(params[:page]).where(user_id: @current_user.id)
