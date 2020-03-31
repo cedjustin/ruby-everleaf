@@ -56,13 +56,8 @@
             <td>low</td>
           <%end%>
         <%end%>
-        <%task.labels_ids.each do |id|%>
-          <%@labels.each do |label|%>
-            <%if id == label.id%>
-              <td><%=label.label_type%></td>
-            <%else%>
-            <%end%>
-          <%end%>
+        <%task.labels.each do |label|%>
+          <td><%=label.label_type%></td>
         <%end%>
         <td><%= link_to 'Show', task %></td>
         <td><%= link_to 'Edit', edit_task_path(task) %></td>
