@@ -30,7 +30,7 @@ RSpec.feature "Task management function", type: :feature do
 
     visit tasks_path
 
-    expect(page).to have_content('title23')
+     
     expect(page).to have_content('title3')
     expect(page).to have_content('low')
     expect(page).to have_content('high')
