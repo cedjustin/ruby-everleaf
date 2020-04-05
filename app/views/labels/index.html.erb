@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+<%= link_to "Admin dashboard", admin_users_path, class:"btn btn-success ml-2" %>
+<div class="nav nav-pills nav-justified">
+
+  <div class="nav-item">
+    <% if logged_in? %>
+      <%= link_to @current_user.username, user_path(@current_user.id), class:"btn btn-outlined-dark" %>
+      <%= link_to "Logout", session_path(@current_user.id), method: :delete, class:"btn btn-dark" %>
+    <% else %>
+      <% controller.redirect_to new_session_path %>
+    <% end %>
+  </div>
+
+</div>
+
+<h1>Labels</h1>
+
+<% n=0%>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>NO</th>
+      <th>Label type</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @labels.each do |label| %>
+      <tr>
+        <td><%= n += 1 %></td>
+        <td><%= label.label_type %></td>
+        <td><%= link_to 'Show', label_path(label) %></td>
+        <td><%= link_to 'Edit', edit_label_path(label) %></td>
+        <td><%= link_to 'Destroy', label, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<%= link_to "Create label", new_label_path, class:"btn btn-primary ml-2" %>

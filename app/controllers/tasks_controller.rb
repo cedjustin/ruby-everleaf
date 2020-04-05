@@ -6,7 +6,8 @@ class TasksController < ApplicationController
   def index
     if logged_in?
       @search = Task.ransack(params[:q])
-      @tasks = @search.result.order(created_at: :desc).page(params[:page])
+      @tasks = @search.result.includes(:associations, :labels).order(created_at: :desc).page(params[:page])
+      @labels = Label.all
       if params[:sort_expired]
         @tasks = Task.all.order(end_date: :desc).page(params[:page]).where(user_id: @current_user.id)
       elsif params[:sort_priority]
@@ -22,22 +23,25 @@ class TasksController < ApplicationController
 
   # GET /tasks/1
   def show
+    @labels = Label.all
   end
 
   # GET /tasks/new
   def new
     @task = Task.new
     current_user = @current_user
+    @labels = Label.all
   end
 
   # GET /tasks/1/edit
   def edit
+    @labels = Label.all
   end
 
   # POST /tasks
   def create
     @task = Task.new(task_params)
-
+    @labels = Label.all
     if @task.save
       redirect_to @task, notice: 'Task was successfully created.'
     else
@@ -74,6 +78,6 @@ class TasksController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def task_params
-    params.require(:task).permit(:title,:start_date, :end_date, :status, :priority, :user_id)
+    params.require(:task).permit(:title,:start_date, :end_date, :status, :priority, :user_id, label_ids: [])
   end
 end

@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container d-flex justify-content-center">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Label</h5>
+      <p class="card-text">
+        <strong>Label Type:</strong>
+        <%= @label.label_type %>
+      </p>
+      <%= link_to 'Edit', edit_label_path(@label), class: "btn btn-primary" %>
+      <%= link_to 'Back', labels_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
+</div>
