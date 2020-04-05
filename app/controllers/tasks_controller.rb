@@ -8,14 +8,14 @@ class TasksController < ApplicationController
       @search = Task.ransack(params[:q])
       @tasks = @search.result.includes(:associations, :labels).order(created_at: :desc).page(params[:page])
       @labels = Label.all
-      if params[:sort_expired]
-        @tasks = Task.all.order(end_date: :desc).page(params[:page]).where(user_id: @current_user.id)
-      elsif params[:sort_priority]
-        @tasks = Task.all.order(priority: :desc).page(params[:page]).where(user_id: @current_user.id)
-        # @tasks = Task.all.order(created_at: :asc)
-      else
-        @tasks = Task.all.page(params[:page]).where(user_id: @current_user.id)
-      end
+      # if params[:sort_expired]
+      #   @tasks = Task.all.order(end_date: :desc).page(params[:page]).where(user_id: @current_user.id)
+      # elsif params[:sort_priority]
+      #   @tasks = Task.all.order(priority: :desc).page(params[:page]).where(user_id: @current_user.id)
+      #   # @tasks = Task.all.order(created_at: :asc)
+      # else
+      #   @tasks = Task.all.page(params[:page]).where(user_id: @current_user.id)
+      # end
     else
       redirect_to new_session_path
     end
